@@ -24,7 +24,13 @@ def ingresar_registro():
 
     return Registro(nombre, dni, patente, hora_ingreso)
 
+def guardar_registros(registros):
+    with open("registros.txt", "a") as archivo:
+        for registro in registros:
+            archivo.write(f"{registro.nombre},{registro.dni},{registro.patente},{registro.hora_ingreso},{registro.hora_salida}\n")
 
+    
+    
 def salir_registro_dni():
     dni = input("Número de RUN: ")
 
