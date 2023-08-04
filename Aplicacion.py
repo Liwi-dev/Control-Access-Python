@@ -58,6 +58,10 @@ def salir_registro(registros, identificador, por_dni=True):
     if not encontrado:
         print("No se encontró un registro de ingreso para el identificador proporcionado.")
         
+def eliminar_registro(registros, identificador):
+    registros = [registro for registro in registros if registro.dni != identificador and registro.patente != identificador]
+    return registros
+
 
     
 def salir_registro_dni():
