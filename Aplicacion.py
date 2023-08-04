@@ -1,5 +1,21 @@
 import datetime
 
+class Registro:
+
+    def __init__(self, nombre, dni, patente, hora_ingreso, hora_salida=None):
+        self.nombre = nombre 
+        self.dni = dni
+        self.patente = patente.upper()
+        self.hora_ingreso = hora_ingreso
+        self.hora_salida = hora_salida
+    
+    def marcar_salida(self):
+        if not self.hora_salida:
+            self.hora_salida = datetime.datetime.now()
+        else:
+            print("Este registro ya tiene una hora de salida registrada.")
+
+
 def ingresar_registro():
     nombre = input("Nombre: ")
     dni = input("Número de RUN: ")
