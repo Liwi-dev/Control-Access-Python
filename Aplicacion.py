@@ -20,16 +20,10 @@ def ingresar_registro():
     nombre = input("Nombre: ")
     dni = input("Número de RUN: ")
     patente = input("Patente de vehículo: ").upper()
-    
-    nombre_formateado = ' '.join(word.capitalize() for word in nombre.split())
-    hora_ingreso = datetime.datetime.now()
-    hora_salida = None
+    hora_ingreso = datetime.datetime.now() 
 
-    registro = f"{nombre_formateado},{nombre},{dni},{patente},{hora_ingreso},{hora_salida}\n"
-    with open("registros.txt", "a") as archivo:
-        archivo.write(registro)
+    return Registro(nombre, dni, patente, hora_ingreso)
 
-    print("Registro de ingreso creado.")
 
 def salir_registro_dni():
     dni = input("Número de RUN: ")
