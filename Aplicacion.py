@@ -29,7 +29,24 @@ def guardar_registros(registros):
         for registro in registros:
             archivo.write(f"{registro.nombre},{registro.dni},{registro.patente},{registro.hora_ingreso},{registro.hora_salida}\n")
 
-    
+def cargar_registros():
+    registros = []
+    try:
+        with open("registros.txt", "r") as archivo:
+            lineas = archivo.readlines()
+            for linea in lineas:
+                datos = linea.strip().split(",")
+                nombre, dni, patente, hora_ingreso_str, hora_salida_str, = datos
+                hora_ingreso = datetime.datetime.strptime(hora_ingreso_str, "%Y-%m-%d %H:%M:%S.%f")
+                if hora_salida_str:
+                    hora_salida = datetime.datetime.strptime(hora_salida_str, "%Y-%m-%d %H:%M:%S.%f")
+                else:
+                    hora_salida = None
+                registros.append(Registro(nombre, dni, patente, hora_ingreso, hora_salida))
+    except FileNotFoundError:
+        pass
+    return registros   
+             
     
 def salir_registro_dni():
     dni = input("Número de RUN: ")
