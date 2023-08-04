@@ -46,7 +46,19 @@ def cargar_registros():
     except FileNotFoundError:
         pass
     return registros   
-             
+    
+def salir_registro(registros, identificador, por_dni=True):
+    encontrado = False
+    for registro in registros:
+        if (por_dni and registro.dni == identificador) or (not por_dni and registro.dni == identificador)             
+        registro.marcar_salida()
+        encontrado = True
+        break
+    
+    if not encontrado:
+        print("No se encontró un registro de ingreso para el identificador proporcionado.")
+        
+    
     
 def salir_registro_dni():
     dni = input("Número de RUN: ")
