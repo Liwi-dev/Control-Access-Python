@@ -63,25 +63,49 @@ def eliminar_registro(registros, identificador):
     return registros
 
     
+    
 def main():
-    print("Bienvenido al sistema de control de acceso")
-    print("1. Ingresar")
-    print("2. Salida por RUN")
-    print("3. Salida por patente")
-    print("4. Eliminar un registro")
-    opcion = input("Seleccione una opción: ")
+    registros = cargar_registros()
+    
+    while True:
+        print("Bienvenido al sistema de control de acceso")
+        print("1. Ingresar")
+        print("2. Salida por RUN")
+        print("3. Salida por patente")
+        print("4. Eliminar un registro")
+        print("5. Salir")
+        opcion = input("Seleccione una opción: ")
 
 
-    if opcion == "1":
-        ingresar_registro()
-    elif opcion == "2":
-        salir_registro_dni()
-    elif opcion == "3":
-        salir_registro_patente()
-    elif opcion == "4":
-        eliminar_registro()
-    else:
-        print("Opción no válida.")
+        if opcion == "1":
+            registro = ingresar_registro()
+            registros.append(registro)
+            guardar_registros([registro])
+            print("Registro de ingreso creado.")
+            
+        elif opcion == "2":
+            dni = input("Numero de RUN: ")
+            salir_registro(registros, dni)
+            guardar_registros(registros)
+            print("Registro de salida registrado.")
+            
+        elif opcion == "3":
+            patente = input("Patente del vehiculo: ")
+            salir_registro(registros, patente, por_dni=False)
+            guardar_registros(registros)
+            print("Registro de salida registrado.")
+            
+        elif opcion == "4":
+            indentificador = input("Ingrese el numero de RUN o la patente del registro a eliminar: ")
+            registros = eliminar_registro(registros, indentificador)
+            guardar_registros(registros)
+            print("Registro eliminado.")
+        
+        elif opcion == "5":
+            break
+            
+        else:
+            print("Opción no válida.")
 
 if __name__ == "__main__":
     main()
