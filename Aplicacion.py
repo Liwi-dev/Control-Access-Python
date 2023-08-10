@@ -30,7 +30,7 @@ def guardar_registros(registros):
             archivo.write(f"{registro.nombre},{registro.dni},{registro.patente},{registro.hora_ingreso},{registro.hora_salida}\n")
 
 def cargar_registros():
-    registros = []
+    registros = {}
     try:
         with open("registros.txt", "r") as archivo:
             lineas = archivo.readlines()
@@ -38,14 +38,21 @@ def cargar_registros():
                 datos = linea.strip().split(",")
                 nombre, dni, patente, hora_ingreso_str, hora_salida_str, = datos
                 hora_ingreso = datetime.datetime.strptime(hora_ingreso_str, "%Y-%m-%d %H:%M:%S.%f")
-                if hora_salida_str:
+                if hora_salida_str != "None":
                     hora_salida = datetime.datetime.strptime(hora_salida_str, "%Y-%m-%d %H:%M:%S.%f")
                 else:
                     hora_salida = None
-                registros.append(Registro(nombre, dni, patente, hora_ingreso, hora_salida))
+                registros[dni] = Registro(nombre, dni, patente, hora_ingreso, hora_salida)
     except FileNotFoundError:
         pass
     return registros   
+
+def eliminar_registro(registros, identificador):
+    if identificador in registros:
+        del registros[identificador]
+        print(f"Registros para {identificador} eliminados.")
+    else:
+        print(f"No se encontraron registros para {identificador}.")
     
 def salir_registro(registros, identificador, por_dni=True):
     encontrado = False
@@ -58,12 +65,7 @@ def salir_registro(registros, identificador, por_dni=True):
     if not encontrado:
         print("No se encontró un registro de ingreso para el identificador proporcionado.")
         
-def eliminar_registro(registros, identificador):
-    registros = [registro for registro in registros if registro.dni != identificador and registro.patente != identificador]
-    return registros
-
-    
-    
+ 
 def main():
     registros = cargar_registros()
     
@@ -72,15 +74,15 @@ def main():
         print("1. Ingresar")
         print("2. Salida por RUN")
         print("3. Salida por patente")
-        print("4. Eliminar un registro")
+        print("4. Eliminar todos los registros de un usuario")
         print("5. Salir")
         opcion = input("Seleccione una opción: ")
 
 
         if opcion == "1":
             registro = ingresar_registro()
-            registros.append(registro)
-            guardar_registros([registro])
+            registros[registro.dni] = registro
+            guardar_registros(registros)
             print("Registro de ingreso creado.")
             
         elif opcion == "2":
@@ -97,7 +99,7 @@ def main():
             
         elif opcion == "4":
             indentificador = input("Ingrese el numero de RUN o la patente del registro a eliminar: ")
-            registros = eliminar_registro(registros, indentificador)
+            eliminar_registro(registros, indentificador)
             guardar_registros(registros)
             print("Registro eliminado.")
         
