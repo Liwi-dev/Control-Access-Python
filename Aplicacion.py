@@ -26,7 +26,7 @@ def ingresar_registro():
 
 def guardar_registros(registros):
     with open("registros.txt", "a") as archivo:
-        for registro in registros:
+        for registro in registros.values():
             archivo.write(f"{registro.nombre},{registro.dni},{registro.patente},{registro.hora_ingreso},{registro.hora_salida}\n")
 
 def cargar_registros():
@@ -55,14 +55,12 @@ def eliminar_registro(registros, identificador):
         print(f"No se encontraron registros para {identificador}.")
     
 def salir_registro(registros, identificador, por_dni=True):
-    encontrado = False
-    for registro in registros:
-        if (por_dni and registro.dni == identificador) or (not por_dni and registro.patente == identificador):
-            registro.marcar_salida()
-            encontrado = True
-            break
+    if identificador in registros:
+        registro = registros[identificador]
+        registro.marcar_salida()
+        print("Registro de salida registrado")
     
-    if not encontrado:
+    else:
         print("No se encontró un registro de ingreso para el identificador proporcionado.")
         
  
@@ -98,12 +96,13 @@ def main():
             print("Registro de salida registrado.")
             
         elif opcion == "4":
-            indentificador = input("Ingrese el numero de RUN o la patente del registro a eliminar: ")
+            indentificador = input("Ingrese el numero de RUN: ")
             eliminar_registro(registros, indentificador)
             guardar_registros(registros)
             print("Registro eliminado.")
         
         elif opcion == "5":
+            guardar_registros(registros)
             break
             
         else:
